@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.text.DecimalFormat;
 import java.util.Random;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -81,9 +82,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 lat = currentLatLng.latitude + (new Random().nextInt(999999) * 0.0000001);
                 lng = currentLatLng.longitude + (new Random().nextInt(999999) * 0.0000001);
             }
-            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title("Marker" + i));
-            Log.d(TAG, "addTestMarkers: lat = " + lat + ", " + lng);
+            map.addMarker(new MarkerOptions().position(new LatLng(formatDouble(lat), formatDouble(lng)))
+                    .title("Marker" + i));
+            Log.d(TAG, "addTestMarkers: lat = " + formatDouble(lat) +  ", " + formatDouble(lng));
         }
+    }
+
+    private double formatDouble(double num) {
+        DecimalFormat decimalFormat = new DecimalFormat("#.#####");
+        String result = decimalFormat.format(num);
+        return Double.parseDouble(result);
     }
 
     private void enableMyLocation() {
