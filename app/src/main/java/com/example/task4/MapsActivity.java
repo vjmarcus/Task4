@@ -1,46 +1,115 @@
 package com.example.task4;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.util.Random;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final String TAG = "MyApp";
+    private FusedLocationProviderClient fusedLocationClient;
+    private LatLng currentLatLng;
+    private GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        map = googleMap;
+        enableMyLocation();
+        getLastKnownLocation();
+    }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    private void getLastKnownLocation() {
+        if (checkPermission()) {
+            fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    Log.d(TAG, "onSuccess: location");
+                    currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    Log.d(TAG, "onMapReady: current LatLng" + location.toString());
+                    addTestMarkers();
+                    cameraGoToLocation();
+                }
+            });
+        }
+    }
+
+    private void addTestMarkers() {
+        for (int i = 0; i < 5; i++) {
+            double lat;
+            double lng;
+            int random = new Random().nextInt(10);
+            if (random % 2 == 0) {
+                lat = currentLatLng.latitude + (new Random().nextInt(999999) * 0.0000001);
+                lng = currentLatLng.longitude - (new Random().nextInt(999999) * 0.0000001);
+            } else if (random % 3 == 0) {
+                lat = currentLatLng.latitude - (new Random().nextInt(999999) * 0.0000001);
+                lng = currentLatLng.longitude + (new Random().nextInt(999999) * 0.0000001);
+            } else if (random % 5 == 0) {
+                lat = currentLatLng.latitude - (new Random().nextInt(999999) * 0.0000001);
+                lng = currentLatLng.longitude - (new Random().nextInt(999999) * 0.0000001);
+            } else {
+                lat = currentLatLng.latitude + (new Random().nextInt(999999) * 0.0000001);
+                lng = currentLatLng.longitude + (new Random().nextInt(999999) * 0.0000001);
+            }
+            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title("Marker" + i));
+            Log.d(TAG, "addTestMarkers: lat = " + lat + ", " + lng);
+        }
+    }
+
+    private void enableMyLocation() {
+        //if granted
+        if (checkPermission()) {
+            if (map != null) {
+                map.setMyLocationEnabled(true);
+            }
+        } else {
+            map.getUiSettings().setMyLocationButtonEnabled(true);
+        }
+    }
+
+    private void cameraGoToLocation() {
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 10.0f));
+    }
+
+    private Boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "enableMyLocation: permission granted");
+            return true;
+        } else {
+            Log.d(TAG, "enableMyLocation: request permission");
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            return false;
+        }
     }
 }

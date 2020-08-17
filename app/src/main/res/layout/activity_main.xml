@@ -12,7 +12,7 @@
         android:layout_width="160dp"
         android:layout_height="166dp"
         MyCustomCircleView:circleBackground="@color/colorOrange"
-        MyCustomCircleView:circleRadius="50"
+        MyCustomCircleView:circleRadius="200"
         MyCustomCircleView:layout_constraintEnd_toEndOf="parent"
         MyCustomCircleView:layout_constraintStart_toStartOf="parent"
         MyCustomCircleView:layout_constraintTop_toTopOf="parent" />

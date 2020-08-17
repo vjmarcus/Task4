@@ -2,6 +2,7 @@ package com.example.task4;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,9 +11,7 @@ import android.widget.Toast;
 
 import com.example.task4.ui.custom.CustomCircleView;
 
-public class MainActivity extends AppCompatActivity {
-
-    private Button button;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +21,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        button = findViewById(R.id.goToMapButton);
+        Button button = findViewById(R.id.goToMapButton);
+        button.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View view) {
+        intentGoToMapActivity();
+    }
+
+    private void intentGoToMapActivity() {
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
+    }
 }
