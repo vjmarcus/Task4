@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:MyCustomCircleView="http://schemas.android.com/apk/res-auto"
+    xmlns:customCircleView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,22 +11,22 @@
         android:id="@+id/customCircleView"
         android:layout_width="160dp"
         android:layout_height="166dp"
-        MyCustomCircleView:circleBackground="@color/colorOrange"
-        MyCustomCircleView:circleRadius="200"
-        MyCustomCircleView:layout_constraintEnd_toEndOf="parent"
-        MyCustomCircleView:layout_constraintStart_toStartOf="parent"
-        MyCustomCircleView:layout_constraintTop_toTopOf="parent" />
+        customCircleView:circleBackground="@color/colorOrange"
+        customCircleView:circleRadius="200"
+        customCircleView:layout_constraintEnd_toEndOf="parent"
+        customCircleView:layout_constraintStart_toStartOf="parent"
+        customCircleView:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/goToMapButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/go_to_map"
-        MyCustomCircleView:layout_constraintBottom_toBottomOf="parent"
-        MyCustomCircleView:layout_constraintEnd_toEndOf="parent"
-        MyCustomCircleView:layout_constraintHorizontal_bias="0.498"
-        MyCustomCircleView:layout_constraintStart_toStartOf="parent"
-        MyCustomCircleView:layout_constraintTop_toBottomOf="@+id/customCircleView"
-        MyCustomCircleView:layout_constraintVertical_bias="0.748" />
+        customCircleView:layout_constraintBottom_toBottomOf="parent"
+        customCircleView:layout_constraintEnd_toEndOf="parent"
+        customCircleView:layout_constraintHorizontal_bias="0.498"
+        customCircleView:layout_constraintStart_toStartOf="parent"
+        customCircleView:layout_constraintTop_toBottomOf="@+id/customCircleView"
+        customCircleView:layout_constraintVertical_bias="0.748" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

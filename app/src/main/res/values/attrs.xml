@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="MyCustomCircleView">
+    <declare-styleable name="CustomCircleView">
         <attr name="circleRadius" format="float"/>
         <attr name="circleBackground" format="color"/>
     </declare-styleable>

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -83,10 +84,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             map.addMarker(new MarkerOptions().position(new LatLng(formatDouble(lat), formatDouble(lng)))
                     .title("Marker" + i));
-            Log.d(TAG, "addTestMarkers: lat = " + formatDouble(lat) +  ", " + formatDouble(lng));
+            Log.d(TAG, "addTestMarkers: lat = " + lat +  ", " + lng);
         }
     }
-
+    // можно в Ютил
     private double formatDouble(double num) {
         DecimalFormat decimalFormat = new DecimalFormat("#.#####");
         String result = decimalFormat.format(num);
@@ -94,7 +95,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void enableMyLocation() {
-        //if granted
         if (checkPermission()) {
             if (map != null) {
                 map.setMyLocationEnabled(true);
@@ -116,6 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             Log.d(TAG, "enableMyLocation: request permission");
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
             return false;
         }
     }

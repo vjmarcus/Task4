@@ -7,8 +7,12 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+
 import androidx.annotation.Nullable;
+
 import com.example.task4.R;
+
+import java.util.Objects;
 
 public class CustomCircleView extends View {
 
@@ -26,20 +30,20 @@ public class CustomCircleView extends View {
         super(context, attrs);
         paint = new Paint();
         Log.d(TAG, "CustomCircleView: 2 const");
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MyCustomCircleView);
-        radius = Float.parseFloat(typedArray.getString(R.styleable.MyCustomCircleView_circleRadius));
-        color = typedArray.getColor(R.styleable.MyCustomCircleView_circleBackground, 0xff000000);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomCircleView);
+        radius = Float.parseFloat(Objects.requireNonNull(typedArray.getString(R.styleable
+                .CustomCircleView_circleRadius)));
+        color = typedArray.getColor(R.styleable.CustomCircleView_circleBackground, 0xff000000);
         Log.d(TAG, "CustomCircleView: = " + radius);
         typedArray.recycle();
-
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // define top left and bottom right
         Log.d(TAG, "onDraw: ");
-        float x = getWidth() / 2 ;
-        float y = getHeight() / 2 ;
+        int divideValue = 2;
+        float x = (float) getWidth() / divideValue;
+        float y = (float) getHeight() / divideValue;
         paint.setColor(color);
         canvas.drawCircle(x, y, radius, paint);
     }
